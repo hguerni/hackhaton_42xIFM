@@ -1,0 +1,53 @@
+services:
+  frontend:
+    image: front-image # nom de l'image
+    container_name: front-container # nom du containeur
+    volumes:
+      - ./front:/usr/src/app  #./chemin_local:chemin_dans_le_containeur
+    build:
+      context: ./front #ou se trouve le dockerfile
+      dockerfile: Dockerfile #le dockerfile
+    restart: unless-stopped # la stratégie redémarre un conteneur quel que soit le code de sortie, mais arrête de redémarrer lorsque le service est arrêté ou supprimé.
+    command: npm start # lance directement la commande npm start dans le containeur
+    ports:
+        - "3000:3000" #sur le port 3000
+  backend:
+    image: back-image # nom de l'image
+    container_name: back-container # nom du containeur
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    env_file:
+      - ./back/.env
+    environment:
+      - NODE_ENV= production
+    depends_on:
+      - db
+    restart: unless-stopped
+    volumes:
+      - ./back:/usr/src/app
+    command: npm run start:dev
+    ports:
+      - "3030:3030"
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: database_pixel_wardrobe
+    ports:
+      - "31415:5432"
+    volumes:
+      - ./database-data:/var/lib/postgresql/data
+    container_name: db_app
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: lol@lol.com # email login
+      PGADMIN_DEFAULT_PASSWORD: lol # password login
+      PGADMIN_LISTEN_PORT: 5050 # connect to db : port - "5432", host - "db", meme connexion que typeorm
+    ports:
+      - "5050:5050"
+    container_name: pgadmin
