@@ -1,0 +1,42 @@
+.container {
+  height: 100vh;
+  background-color: #E294BC;
+}
+
+h1 {
+  color: white;
+  font-size: xxx-large;
+}
+
+h2 {
+  font-style: italic;
+  color: white;
+}
+.images > img {
+  height: 70px;
+  padding: 40px;
+}
+
+.link1 {
+  background-color: rgb(211, 124, 196);
+  text-decoration: none;
+  margin: 20px;
+  font-size: larger;
+
+}
+
+
+.link2 {
+  background-color: rgb(211, 124, 196);
+  text-decoration: none;
+  margin: 20px;
+  font-size: larger;
+}
+
+
+.link3 {
+  background-color: rgb(211, 124, 196);
+  text-decoration: none;
+  margin: 20px;
+  font-size: larger;
+}
