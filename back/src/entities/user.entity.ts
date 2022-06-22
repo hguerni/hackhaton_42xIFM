@@ -44,10 +44,10 @@ login: string;
 @IsString()
 password: string;
 
-@OneToMany(() => SaleEntity, sales => sales.pending)
+@OneToMany(() => SaleEntity, sales => sales.user)
 sales: SaleEntity[];
 
-@OneToMany(() => SaleEntity, bought => bought.sold)
+@OneToMany(() => SaleEntity, bought => bought.client)
 bought: SaleEntity[];
 
 @Column({default: false})

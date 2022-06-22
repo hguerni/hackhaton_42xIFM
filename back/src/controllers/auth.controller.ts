@@ -15,19 +15,19 @@ export class AuthController {
     ) {}
 
     @Post('register')
-    async register(@Re, @Res({passthrough: true}) response: Response) {
-        const jwt = await this.jwtService.signAsync({id: data.data.id});
-        const clientData = await this.userService.findByFtId(data.data.id);
-        await this.authService.newUser(data, clientID);
+    async register(@Body() data, @Res({passthrough: true}) response: Response) {
+        const jwt = await this.jwtService.signAsync({id: data.id});
+        //const clientData = await this.userService.findByFtId(data.data.id);
+        //await this.authService.newUser(data, clientID);
         response.cookie('clientID', "0", {httpOnly: true});
-        const client = await this.jwtService.verifyAsync(req.user);
+        //const client = await this.jwtService.verifyAsync(req.user);
 
-        const clientData = await this.userService.findByFtId(client['id']);
+        //const clientData = await this.userService.findByFtId(client['id']);
 
-        if(!clientData)
-            return response.redirect('http://localhost:3000/')
-        if(clientData.twofa)
-            return response.redirect('http://localhost:3000/2fa')
+        // if(!clientData)
+        //     return response.redirect('http://localhost:3000/')
+        // if(clientData.twofa)
+        //     return response.redirect('http://localhost:3000/2fa')
         return response.redirect('http://localhost:3000/profile')
     }
 
@@ -83,23 +83,7 @@ export class AuthController {
         await this.authService.updateAvatar(clientData);
     }
 
-    @Get("addfriend/:id")
-    async addFriend(@Param('id', new ParseIntPipe()) id, @Req() request: Request) {
-        const clientID = await this.authService.clientID(request);
-        return await this.userService.addFriend(clientID, id)
-    }
 
-    @Get("removefriend/:id")
-    async removeFriend(@Param('id', new ParseIntPipe()) id, @Req() request: Request) {
-        const clientID = await this.authService.clientID(request);
-        return await this.userService.removeFriend(clientID, id)
-    }
-
-    @Get("block/:id")
-    async block(@Param('id', new ParseIntPipe()) id, @Req() request: Request) {
-        const clientID = await this.authService.clientID(request);
-        return await this.userService.block(clientID, id)
-    }
 
     @Get('userData')
     async getUserData(@Req() request: Request) {
@@ -119,8 +103,6 @@ export class AuthController {
             return null;
         let usermodel = {id: 0, username: '', online: 0, email: '', avatar: '', twofa: false}
         usermodel.id = user.id;
-        usermodel.username = user.username;
-        usermodel.online = user.online;
         usermodel.email = user.email
         usermodel.avatar = user.avatar;
         usermodel.twofa = user.twofa;
@@ -143,7 +125,7 @@ export class AuthController {
     @Get("friends")
     async getFriends(@Req() request: Request) {
         const clientID = await this.authService.clientID(request);
-        return await this.userService.getFriends(clientID);
+        //return await this.userService.getFriends(clientID);
     }
 
     @Get('logout')
@@ -154,12 +136,6 @@ export class AuthController {
 
         return {message: 'Success'}
 
-    }
-
-    @Put("EndGame")
-    async endGame(@Body() data: any, @Req() request: Request) {
-        const clientID = await this.authService.clientID(request);
-        return await this.userService.saveGame(clientID, data);
     }
 
     @Get('uploads/:path')

@@ -10,8 +10,6 @@ axios.defaults.withCredentials = true;
 
 
 ReactDOM.render(
-  //<React.StrictMode> //desactivate for testing websockets
     <App />,
-  //</React.StrictMode>,
   document.getElementById("root")
 );

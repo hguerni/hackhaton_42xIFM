@@ -6,11 +6,10 @@ import { UserService } from '../services/user.service';
 import {JwtModule} from "@nestjs/jwt";
 import {jwtConstants} from "../models/user.model";
 import {AuthService} from "../services/auth.service";
-import { FriendEntity } from '../entities/friend.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([UserEntity, FriendEntity]),
+        TypeOrmModule.forFeature([UserEntity]),
         JwtModule.register({
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '1d' },

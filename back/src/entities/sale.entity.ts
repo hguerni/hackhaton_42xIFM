@@ -24,8 +24,11 @@ import { UserEntity } from './user.entity';
   @IsString()
   file_url: string;
   
-  @ManyToOne(() => UserEntity, user => user.bought)
+  @ManyToOne(() => UserEntity, user => user.sales)
   user: UserEntity;
+
+  @ManyToOne(() => UserEntity, user => user.bought)
+  client: UserEntity;
 
   @Column()
   @IsNumber()
