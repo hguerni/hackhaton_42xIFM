@@ -9,13 +9,17 @@ import {  BaseEntity,
   ManyToMany,
   OneToMany,
   Entity} from 'typeorm';
-import { isBoolean, IsBoolean, IsEmail, IsString } from 'class-validator';
+import { isBoolean, IsBoolean, IsEmail, IsNumber, IsString } from 'class-validator';
 import { SaleEntity } from './sale.entity';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
 @PrimaryGeneratedColumn()
 id: number;
+
+@Column()
+@IsNumber()
+ft_id: number;
 
 @CreateDateColumn()
 created: Date;
