@@ -15,20 +15,25 @@ export class AuthController {
     ) {}
 
     @Post('register')
-    async register(@Body() data, @Res({passthrough: true}) response: Response) {
-        const jwt = await this.jwtService.signAsync({id: data.id});
-        //const clientData = await this.userService.findByFtId(data.data.id);
-        //await this.authService.newUser(data, clientID);
-        response.cookie('clientID', "0", {httpOnly: true});
-        //const client = await this.jwtService.verifyAsync(req.user);
+    async register(@Body() data, @Req() req, @Res({passthrough: true}) response: Response) {
+        const jwt = await this.jwtService.signAsync({id: data.data.id});
+        let clientData = await this.userService.findByFtId(data.data.id);
+        if(!clientData){
+            let yay = new RegisterDTO;
+            yay.login = data.data.login;
+            yay.username = data.data.login;
+            yay.email = data.data.email;
+            yay.ft_id = data.data.id;
+            yay.avatar = "http://localhost:3030/uploads/avatar.png"
+            await this.authService.newUser(yay, data.data.id);
 
-        //const clientData = await this.userService.findByFtId(client['id']);
-
-        // if(!clientData)
-        //     return response.redirect('http://localhost:3000/')
-        // if(clientData.twofa)
-        //     return response.redirect('http://localhost:3000/2fa')
-        return response.redirect('http://localhost:3000/profile')
+        }
+        response.cookie('clientID', clientData.ft_id, {httpOnly: true});
+        if(!clientData)
+            return response.redirect('http://localhost:3000/')
+        if(clientData.twofa)
+            return response.redirect('http://localhost:3000/2fa')
+        return response.redirect('http://localhost:3000/')
     }
 
     @Get('2fa/activate')
