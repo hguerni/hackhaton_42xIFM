@@ -24,11 +24,6 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get("name/:param")
-  async searchUser(@Param('param') param) {
-    return await this.userService.findByUserName(param);
-  }
-
   @Get(":id")
   async getProfile(@Param('id', new ParseIntPipe()) id) {
     return await this.userService.getById(id);
